@@ -79,10 +79,10 @@ bool Gamepad::isButtonPressed(GAMEPAD_BUTTON btn)
 		ZeroMemory(&state, sizeof(XINPUT_STATE));
 		XInputGetState(gamepadNumber, &state);
 
-		if (state.Gamepad.wButtons == enumToButton(btn)) return true;
+		if (state.Gamepad.wButtons == getButtonNumber(btn)) return true;
 	}
 	
-	return (sf::Joystick::isButtonPressed(gamepadNumber, enumToButton(btn)));
+	return (sf::Joystick::isButtonPressed(gamepadNumber, getButtonNumber(btn)));
 }
 
 float Gamepad::getAxisPosition(GAMEPAD_AXIS axis)
@@ -152,6 +152,27 @@ float Gamepad::getTriggerValue(GAMEPAD_TRIGGER tgr)
 			}
 			else return 0.f;
 		}
+	}
+}
+
+int Gamepad::getButtonNumber(GAMEPAD_BUTTON btn)
+{
+	switch (btn)
+	{
+		case GAMEPAD_BUTTON::btn_a: if (isXInput) return XINPUT_GAMEPAD_A; return A;
+		case GAMEPAD_BUTTON::btn_b: if (isXInput) return XINPUT_GAMEPAD_B; return B;
+		case GAMEPAD_BUTTON::btn_x: if (isXInput) return XINPUT_GAMEPAD_X; return X;
+		case GAMEPAD_BUTTON::btn_y: if (isXInput) return XINPUT_GAMEPAD_Y; return Y;
+		case GAMEPAD_BUTTON::btn_leftStick: if (isXInput) return XINPUT_GAMEPAD_LEFT_THUMB; return LSTICK;
+		case GAMEPAD_BUTTON::btn_rightStick: if (isXInput) return XINPUT_GAMEPAD_RIGHT_THUMB; return RSTICK;
+		case GAMEPAD_BUTTON::btn_back: if (isXInput) return XINPUT_GAMEPAD_BACK; return BACK;
+		case GAMEPAD_BUTTON::btn_start: if (isXInput) return XINPUT_GAMEPAD_START; return START;
+		case GAMEPAD_BUTTON::btn_lb: if (isXInput) return XINPUT_GAMEPAD_LEFT_SHOULDER; return LB;
+		case GAMEPAD_BUTTON::btn_rb: if (isXInput) return XINPUT_GAMEPAD_RIGHT_SHOULDER; return RB;
+		/*case GAMEPAD_BUTTON::dpad_up: if (isXInput) return XINPUT_GAMEPAD_DPAD_UP; return DPADUP;
+		case GAMEPAD_BUTTON::dpad_down: if (isXInput) return XINPUT_GAMEPAD_DPAD_DOWN; return DPADDOWN;
+		case GAMEPAD_BUTTON::dpad_left: if (isXInput) return XINPUT_GAMEPAD_DPAD_LEFT; return DPADLEFT;
+		case GAMEPAD_BUTTON::dpad_right: if (isXInput) return XINPUT_GAMEPAD_DPAD_RIGHT; return DPADRIGHT;*/
 	}
 }
 
@@ -273,22 +294,6 @@ sf::Joystick::Axis Gamepad::extractAxis(int axisNumber)
 	assert(false && "Axis Number out of range");
 }
 
-int Gamepad::enumToButton(GAMEPAD_BUTTON btn)
-{
-	switch (btn)
-	{
-	case GAMEPAD_BUTTON::btn_a: if (isXInput) return XINPUT_GAMEPAD_A; return A;
-	case GAMEPAD_BUTTON::btn_b: if (isXInput) return XINPUT_GAMEPAD_B; return B;
-	case GAMEPAD_BUTTON::btn_x: if (isXInput) return XINPUT_GAMEPAD_X; return X;
-	case GAMEPAD_BUTTON::btn_y: if (isXInput) return XINPUT_GAMEPAD_Y; return Y;
-	case GAMEPAD_BUTTON::btn_leftStick: if (isXInput) return XINPUT_GAMEPAD_LEFT_THUMB; return LSTICK;
-	case GAMEPAD_BUTTON::btn_rightStick: if (isXInput) return XINPUT_GAMEPAD_RIGHT_THUMB; return RSTICK;
-	case GAMEPAD_BUTTON::btn_back: if (isXInput) return XINPUT_GAMEPAD_BACK; return BACK;
-	case GAMEPAD_BUTTON::btn_start: if (isXInput) return XINPUT_GAMEPAD_START; return START;
-	case GAMEPAD_BUTTON::btn_lb: if (isXInput) return XINPUT_GAMEPAD_LEFT_SHOULDER; return LB;
-	case GAMEPAD_BUTTON::btn_rb: if (isXInput) return XINPUT_GAMEPAD_RIGHT_SHOULDER; return RB;
-	}
-}
 float Gamepad::shrinkValue(float f, bool trigger)
 {
 	/*
