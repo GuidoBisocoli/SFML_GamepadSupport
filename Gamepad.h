@@ -26,6 +26,8 @@ class Gamepad
 		bool isButtonPressed(GAMEPAD_BUTTON btn);
 		float getAxisPosition(GAMEPAD_AXIS axis);
 		float getTriggerValue(GAMEPAD_TRIGGER tgr);
+	
+		int getButtonNumber(GAMEPAD_BUTTON btn);
 	private:
 		int gamepadNumber;
 		bool isXInput;
@@ -35,7 +37,6 @@ class Gamepad
 		bool assignAxis(std::string n, std::string d);
 		sf::Joystick::Axis extractAxis(int axisNumber);
 		
-		int enumToButton(GAMEPAD_BUTTON btn);
 		float shrinkValue(float f, bool trigger);
 
 		GamePadAxis LSTICK_X;
