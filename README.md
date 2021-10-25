@@ -23,10 +23,15 @@ if (sf::Joystick::isConnected(0))
   float brake = _gamepadOne->getTriggerValue(Gamepad::GAMEPAD_TRIGGER::leftTrigger);
   float accelerate = _gamepadOne->getTriggerValue(Gamepad::GAMEPAD_TRIGGER::rightTrigger);
 ```
-3. That's it, enjoy!
+3. Check for an event:
+```
+if (_currentEvent.type == sf::Event::EventType::JoystickButtonReleased && _currentEvent.joystickButton.joystickId == 0 && _currentEvent.joystickButton.button == _gamepadOne->getButtonNumber(Gamepad::GAMEPAD_BUTTON::btn_start))
+  /// do something
+```
+4. That's it!
 
 # Notes
-- Since the majority of gamepads are XBOX controllers the Gamepad contructor checks if the controller is an XInput controller, if not, it then checks SDL database.
+- Since the majority of gamepads that are used on PC are XBOX controllers the Gamepad contructor checks if the controller is an XInput controller, if not, it then checks SDL database.
 - Inverted axes are supported seamlessly, it always returns SFML convention (left and bottom negative, right and up positive)
 - Triggers as buttons or Axes are supported seamlessly, it always returns a value from 0 to 100
 
