@@ -38,4 +38,3 @@ if (_currentEvent.type == sf::Event::EventType::JoystickButtonReleased && _curre
 # To do
 1. Add DPAD support: it can be button, 0.x values or axes
 2. Handle MacOs and Linux gamepads
-3. Test more gamepads. I've checked only 2 gamepads, "Logitech Dual Action" and "Controller (XBOX 360 For Windows)"
