@@ -25,7 +25,7 @@ if (sf::Joystick::isConnected(0))
 ```
 3. Check for an event:
 ```
-if (_currentEvent.type == sf::Event::EventType::JoystickButtonReleased && _currentEvent.joystickButton.joystickId == 0 && _currentEvent.joystickButton.button == _gamepadOne->getButtonNumber(Gamepad::GAMEPAD_BUTTON::btn_start))
+if (_currentEvent.type == sf::Event::EventType::JoystickButtonPressed && _currentEvent.joystickButton.joystickId == 0 && _gamepadOne->isButtonPressed(Gamepad::GAMEPAD_BUTTON::btn_start))
   /// do something
 ```
 4. That's it!
