@@ -79,7 +79,7 @@ bool Gamepad::isButtonPressed(GAMEPAD_BUTTON btn)
 		ZeroMemory(&state, sizeof(XINPUT_STATE));
 		XInputGetState(gamepadNumber, &state);
 
-		if (state.Gamepad.wButtons == getButtonNumber(btn)) return true;
+		if (state.Gamepad.wButtons & getButtonNumber(btn)) return true;
 	}
 	
 	return (sf::Joystick::isButtonPressed(gamepadNumber, getButtonNumber(btn)));
