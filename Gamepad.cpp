@@ -131,25 +131,25 @@ float Gamepad::getTriggerValue(GAMEPAD_TRIGGER tgr)
 	}
 	else {
 		if (tgr == GAMEPAD_TRIGGER::leftTrigger) {
-			// as button
-			if (sf::Joystick::isButtonPressed(gamepadNumber, LTRIGGER.button)) return 100.f;
 			// as axis
-			else if (LTRIGGER.isAxis) {
+			if (LTRIGGER.isAxis) {
 				float p = sf::Joystick::getAxisPosition(gamepadNumber, LTRIGGER.Axis.Axis);
 				if (LTRIGGER.Axis.inverted) p = -p;
 				return p;
 			}
+			// as button
+			else if (sf::Joystick::isButtonPressed(gamepadNumber, LTRIGGER.button)) return 100.f;
 			else return 0.f;
 		}
 		else {
-			// as button
-			if (sf::Joystick::isButtonPressed(gamepadNumber, RTRIGGER.button)) return 100.f;
 			// as axis
-			else if (RTRIGGER.isAxis) {
+			if (RTRIGGER.isAxis) {
 				float p = sf::Joystick::getAxisPosition(gamepadNumber, RTRIGGER.Axis.Axis);
 				if (RTRIGGER.Axis.inverted) p = -p;
 				return p;
 			}
+			// as button
+			if (sf::Joystick::isButtonPressed(gamepadNumber, RTRIGGER.button)) return 100.f;
 			else return 0.f;
 		}
 	}
