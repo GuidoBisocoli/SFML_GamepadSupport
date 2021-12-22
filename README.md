@@ -11,7 +11,7 @@ Gamepad support for SFML based on XInput and the game controller DB for SDL
 ```
   GamepadMgr::Instance().Initialize();
 ```
-2. You them call them through the manager like this:
+2. Call them through the manager like this:
 ```
   GamepadMgr::Instance().GamepadOne()->...
   GamepadMgr::Instance().GamepadTwo()->...
