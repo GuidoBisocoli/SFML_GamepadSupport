@@ -33,6 +33,4 @@ class GamepadMgr
 		// Gamepads
 		Gamepad* _gamepadOne;		
 		Gamepad* _gamepadTwo;
-
-		bool checkIfVendorIsMicrosoftOnDB(int number);
 };
