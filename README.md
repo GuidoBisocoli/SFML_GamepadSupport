@@ -3,7 +3,7 @@ Gamepad support for SFML based on XInput and the game controller DB for SDL
 
 # Installation
 1. Download the latest gamecontrollerdb.txt from https://github.com/gabomdq/SDL_GameControllerDB and place it on your resources directory in your project
-2. Download and place "Gamepad.h" and "Gamepad.cpp" on your project wherever you like (could be hdr and src directories)
+2. Download and place "Gamepad.h", "Gamepad.cpp", "GamepadMgr.h" and "GamepadMgr.cpp" on your project wherever you like (could be hdr and src directories)
 3. Add them to your project
 
 # Usage
