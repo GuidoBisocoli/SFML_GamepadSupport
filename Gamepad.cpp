@@ -11,65 +11,51 @@
 #pragma comment(lib,"XInput.lib") // include libraries
 #pragma comment(lib,"Xinput9_1_0.lib") // include libraries
 
-Gamepad::Gamepad(int number, sf::Joystick::Identification data) : gamepadNumber(number)
+Gamepad::Gamepad(int number, bool XInput) : gamepadNumber(number)
 {
-	bool success = false;
-
 	/// XINPUT
-	DWORD dwResult;
-	XINPUT_STATE state;
-	ZeroMemory(&state, sizeof(XINPUT_STATE));
-	dwResult = XInputGetState(number, &state);
-
-	if (dwResult == ERROR_SUCCESS) { // XBOX Controller is connected
-		isXInput = true;
-		success = true;
+	isXInput = XInput;
+	if (isXInput) {
 		std::cout << "XInput device found.";
+		return;
 	}
+
 	/// SDL DATABASE
-	else // XBOX Controller is not connected -> check database
-	{
-		isXInput = false;
-		success = true;
-
-		// open db
-		std::ifstream gamepads("resources/gamecontrollerdb.txt");
-		if (!gamepads.is_open()) {
-			std::cout << "Gamepad database not found!";
-			return;
-		}
-
-		// Windows section
-		std::string line = "";
-		while (line != "# Windows") std::getline(gamepads, line);
-
-		// Get vendorID and productID from GUID
-		/* EXAMPLE:
-			030000005e040000d102000000000000
-					\__/    \__/
-				   vendor  product
-		   vendor: 5e04 -> 0x045e Hex -> 1118 decimal (Microsoft)
-		   product: d102 -> 0x02d1 Hex -> 721 decimal (Xbox One Controller)
-		*/
-		unsigned int vID = 0;
-		unsigned int pID = 0;
-		while (!(vID == data.vendorId && pID == data.productId) || gamepads.eof()) {
-			std::getline(gamepads, line); // entire line
-			vID = std::stoul(line.substr(10, 2) + line.substr(8, 2), nullptr, 16); // hex string to unsigned int
-			pID = std::stoul(line.substr(18, 2) + line.substr(16, 2), nullptr, 16);
-		}
-		if (!gamepads.eof()) {
-			std::cout << data.name.toAnsiString() << " found.";
-			LoadData(line);
-		}
-
-		// close db
-		gamepads.close();
+	sf::Joystick::Identification data = sf::Joystick::getIdentification(gamepadNumber);
+	// open db
+	std::ifstream gamepads("resources/gamecontrollerdb.txt");
+	if (!gamepads.is_open()) {
+		std::cout << "Gamepad database not found!";
+		return;
 	}
 
-	if (!success)
-		std::cout << "Gamepad not recognized!";
-		// TO DO: manual configuration by user
+	// Windows section
+	std::string line = "";
+	while (line != "# Windows") std::getline(gamepads, line);
+
+	// Get vendorID and productID from GUID
+	/* EXAMPLE:
+		030000005e040000d102000000000000
+				\__/    \__/
+				vendor  product
+		vendor: 5e04 -> 0x045e Hex -> 1118 decimal (Microsoft)
+		product: d102 -> 0x02d1 Hex -> 721 decimal (Xbox One Controller)
+	*/
+	unsigned int vID = 0;
+	unsigned int pID = 0;
+	while (!(vID == data.vendorId && pID == data.productId) || gamepads.eof()) {
+		std::getline(gamepads, line); // entire line
+		vID = std::stoul(line.substr(10, 2) + line.substr(8, 2), nullptr, 16); // hex string to unsigned int
+		pID = std::stoul(line.substr(18, 2) + line.substr(16, 2), nullptr, 16);
+	}
+	if (!gamepads.eof()) {
+		std::cout << data.name.toAnsiString() << " found.";
+		LoadData(line);
+	}
+	else std::cout << "Gamepad not found!"; // TO DO: Manually enter gamepad values
+
+	// close db
+	gamepads.close();
 }
 
 bool Gamepad::isButtonPressed(GAMEPAD_BUTTON btn)
