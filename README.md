@@ -7,28 +7,32 @@ Gamepad support for SFML based on XInput and the game controller DB for SDL
 3. Add them to your project
 
 # Usage
-1. Create a Gamepad
+1. Initialize Manager, the Manager will take care of initializing and populating every Gamepad whether it is XInput or other.
 ```
-if (sf::Joystick::isConnected(0))
-  _gamepadOne = new Gamepad(0, sf::Joystick::getIdentification(0));  
+	GamepadMgr::Instance().Initialize();
 ```
-2. Retrieve data:
+2. You them call them through the manager like this:
+```
+	GamepadMgr::Instance().GamepadOne()->...
+  GamepadMgr::Instance().GamepadTwo()->...
+```
+3. Retrieve data:
 ```
   // button
-  bool shoot = _gamepadOne->isButtonPressed(Gamepad::GAMEPAD_BUTTON::btn_a);
+  bool shoot = GamepadMgr::Instance().GamepadOne()->isButtonPressed(Gamepad::GAMEPAD_BUTTON::btn_a);
   // axis
-  float x = _gamepadOne->getAxisPosition(Gamepad::GAMEPAD_AXIS::leftStick_X);
-  float y = _gamepadOne->getAxisPosition(Gamepad::GAMEPAD_AXIS::leftStick_Y);
+  float x = GamepadMgr::Instance().GamepadOne()->getAxisPosition(Gamepad::GAMEPAD_AXIS::leftStick_X);
+  float y = GamepadMgr::Instance().GamepadOne()->getAxisPosition(Gamepad::GAMEPAD_AXIS::leftStick_Y);
   // trigger
-  float brake = _gamepadOne->getTriggerValue(Gamepad::GAMEPAD_TRIGGER::leftTrigger);
-  float accelerate = _gamepadOne->getTriggerValue(Gamepad::GAMEPAD_TRIGGER::rightTrigger);
+  float brake = GamepadMgr::Instance().GamepadOne()->getTriggerValue(Gamepad::GAMEPAD_TRIGGER::leftTrigger);
+  float accelerate = GamepadMgr::Instance().GamepadOne()->getTriggerValue(Gamepad::GAMEPAD_TRIGGER::rightTrigger);
 ```
-3. Check for an event:
+4. Check for an event:
 ```
-if (_currentEvent.type == sf::Event::EventType::JoystickButtonPressed && _currentEvent.joystickButton.joystickId == 0 && _gamepadOne->isButtonPressed(Gamepad::GAMEPAD_BUTTON::btn_start))
+if (_currentEvent.type == sf::Event::EventType::JoystickButtonPressed && _currentEvent.joystickButton.joystickId == 0 && GamepadMgr::Instance().GamepadOne()->isButtonPressed(Gamepad::GAMEPAD_BUTTON::btn_start))
   /// do something
 ```
-4. That's it!
+5. That's it!
 
 # Notes
 - Since the majority of gamepads that are used on PC are XBOX controllers the Gamepad contructor checks if the controller is an XInput controller, if not, it then checks SDL database.
