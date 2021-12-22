@@ -9,11 +9,11 @@ Gamepad support for SFML based on XInput and the game controller DB for SDL
 # Usage
 1. Initialize Manager, the Manager will take care of initializing and populating every Gamepad whether it is XInput or other.
 ```
-	GamepadMgr::Instance().Initialize();
+  GamepadMgr::Instance().Initialize();
 ```
 2. You them call them through the manager like this:
 ```
-	GamepadMgr::Instance().GamepadOne()->...
+  GamepadMgr::Instance().GamepadOne()->...
   GamepadMgr::Instance().GamepadTwo()->...
 ```
 3. Retrieve data:
