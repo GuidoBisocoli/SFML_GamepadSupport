@@ -6,39 +6,6 @@ GamepadMgr::GamepadMgr()
 	_gamepadTwo = nullptr;
 }
 
-bool GamepadMgr::checkIfVendorIsMicrosoftOnDB(int number)
-{
-	sf::Joystick::Identification data = sf::Joystick::getIdentification(number);
-
-	return data.vendorId == 1118;
-
-	// open db
-	std::ifstream gamepads("resources/gamecontrollerdb.txt");
-	if (!gamepads.is_open()) {
-		std::cout << "Gamepad database not found!";
-		return false;
-	}
-
-	// Windows section
-	std::string line = "";
-	while (line != "# Windows") std::getline(gamepads, line);
-
-	// Get vendorID and productID from GUID
-	/*
-	Microsoft: 5e04 -> 0x045e Hex -> 1118 decimal
-	*/
-	unsigned int vID = 0;
-	unsigned int pID = 0;
-	while (!(vID == data.vendorId && pID == data.productId) || gamepads.eof()) {
-		std::getline(gamepads, line); // entire line
-		vID = std::stoul(line.substr(10, 2) + line.substr(8, 2), nullptr, 16); // hex string to unsigned int
-		pID = std::stoul(line.substr(18, 2) + line.substr(16, 2), nullptr, 16);
-	}
-	if (!gamepads.eof()) return true;
-
-	return false;
-}
-
 void GamepadMgr::Initialize()
 {
 	// Determine connected joysticks and if they are XInput or not
@@ -87,7 +54,9 @@ void GamepadMgr::Initialize()
 		// then that's XInput. It will leave out XBOX controllers by other manufacturers,
 		// but they will be handled by SDL's DB
 
-		if (checkIfVendorIsMicrosoftOnDB(0)) { // For the XInput Gamepad XInput number and SFML number coincide = 0
+		sf::Joystick::Identification data = sf::Joystick::getIdentification(0);
+		int MicrosoftVendorID = 1118;
+		if (data.vendorId == MicrosoftVendorID) { // For the XInput Gamepad XInput number and SFML number coincide = 0
 			_gamepadOne = new Gamepad(0, true); // XInput Gamepad
 			_gamepadTwo = new Gamepad(1, false); // The other Gamepad
 		}
