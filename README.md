@@ -36,11 +36,13 @@ if (_currentEvent.type == sf::Event::EventType::JoystickButtonPressed && _curren
 
 # Notes
 - Since the majority of gamepads that are used on PC are XBOX controllers the Gamepad Manager checks if the controller is an XInput controller, if not, it then checks SDL database.
-- Inverted axes are supported seamlessly, it always returns SFML convention (left and bottom negative, right and up positive)
-- Triggers as buttons or Axes are supported seamlessly, it always returns a value from 0 to 100
+- XInput gamepad number is not always the same as the number provided by sf::Joystick, this is determined and handled properly by the Gamepad Manager.
+- Inverted axes are supported seamlessly, it always returns SFML convention (left and bottom negative, right and up positive).
+- Triggers as buttons or Axes are supported seamlessly, it always returns a value from 0 to 100.
 
-# To do
-1. Add DPAD support: it can be button, 0.x values or axes
-2. Handle MacOs and Linux gamepads
+# To dos and limitations
+1. Add DPAD support: it can be button, 0.x values or axes.
+2. Handle MacOs and Linux gamepads.
 3. If there is another XInput device connected to the computer (a wheel for example) at the moment of execution, it will detect it as a Gamepad. Fix this by ignoring XInput devices that are not Gamepads.
 4. Connecting and disconnecting at runtime is not handled.
+5. Maximum of 2 gamepads limitation.
