@@ -183,10 +183,16 @@ void Gamepad::LoadData(std::string line)
 		std::string name = line.substr(0, pos); // "a"
 		std::string data = line.substr(pos + 1, endPos - pos - 1); // "b0"
 
-		if (data[0] == 'b') // button (TO DO: DPAD)
-			assert(assignButton(name, data) && "Button not found!");
-		else if (data[0] == 'a' || data[0] == '-' || data[0] == '+') // axis
-			assert(assignAxis(name, data) && "Axis not found!");
+		if (data[0] == 'b') { // button (TO DO: DPAD)
+			if (!assignButton(name, data)) {
+				std::cerr << "Button not found: \"" << name << "\" \"" << data << "\"";
+			}
+		}
+		else if (data[0] == 'a' || data[0] == '-' || data[0] == '+') { // axis
+			if (!assignAxis(name, data)) {
+				std::cerr << "Axis not found: \"" << name << "\" \"" << data << "\"";
+			}
+		}
 
 		// next button or axis
 		pos = line.find(",");
