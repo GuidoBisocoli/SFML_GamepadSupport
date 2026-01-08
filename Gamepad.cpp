@@ -1,6 +1,5 @@
 #include "Gamepad.h"
 
-#include <SFML/Graphics.hpp>
 #include <string>
 #include <fstream>
 #include <iostream>
